@@ -20,9 +20,12 @@ class Treuil{
         short speedPayload;
 
         byte status;
+        byte phase;
 
         unsigned long startTime = 0;
         int startDegree = 0;
+
+        float getVitesseTheorique();
 
     public:
         /**

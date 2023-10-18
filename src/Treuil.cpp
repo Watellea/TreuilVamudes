@@ -2,7 +2,9 @@
 
 #define MAX_CUT_TIME 100
 #define MAX_ESSAI_CUT 3
+#define MAX_SPEED 10
 #define DIAMETER 10
+#define KD 0.5
 
 Treuil::Treuil(byte pinLoad, byte pinHotWire, byte pinBrake)
 {
@@ -11,6 +13,7 @@ Treuil::Treuil(byte pinLoad, byte pinHotWire, byte pinBrake)
     this->pinBrake = pinBrake;
     this->status = 0; // Le status 0 indique que le treuil n'a pas commencé à descendre
     this->speedPayload = 0;
+    this->phase = 0;
 
     pinMode(pinLoad, INPUT);
     pinMode(pinHotWire, OUTPUT);
@@ -30,6 +33,38 @@ void Treuil::descend(short hauteurDrone)
     startTime = millis();
 }
 
+float Treuil::getVitesseTheorique(){
+    switch (status)
+    {
+    case 0:
+        return 0;
+    break;
+
+    case 1:
+        return 1;
+    break;
+
+    case 2:
+        return -1;
+    break;
+
+    case 3:
+        return MAX_SPEED;
+    break;
+
+    case 4:
+        return ((-3 * (MAX_SPEED / hauteurDrone) * hauteurPayload) + (3 * MAX_SPEED));
+    break;
+
+    case 5:
+        return 0;
+    break;
+    
+    default:
+        break;
+    }
+}
+
 void Treuil::update()
 {
     unsigned int deltaTime = millis() - startTime;
@@ -44,7 +79,7 @@ void Treuil::update()
     short distanceParcourue = (deltaDegree * DIAMETER) / 360; // Calcule une distance approximative parcourue par le payload en cm
     hauteurPayload -= distanceParcourue; // Soustrait cette distance à la hauteur
 
-    float vitesse = (distanceParcourue / deltaDegree) * 10; // Calcul de la vitesse de la payload en m/s
+    speedPayload = (distanceParcourue / deltaDegree) * 10; // Calcul de la vitesse de la payload en m/s
 
 
 }
