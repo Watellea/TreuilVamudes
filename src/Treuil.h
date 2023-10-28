@@ -26,6 +26,7 @@ class Treuil{
         int startDegree = 0;
 
         float getVitesseTheorique();
+        void ajustBrakes(float vitesseActuelle);
 
     public:
         /**

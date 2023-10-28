@@ -18,10 +18,15 @@ Treuil::Treuil(byte pinLoad, byte pinHotWire, byte pinBrake)
     pinMode(pinLoad, INPUT);
     pinMode(pinHotWire, OUTPUT);
 
-    encodeur.begin();
+    encodeur.begin();   //!! Savoir quel encodeur est utilisé et l'adapter
     encodeur.resetPosition();
 
-    servo.attach(pinBrake);
+    servo.attach(pinBrake); //!! Savoir quel servo est utilisé et adapter
+}
+
+void Treuil::ajustBrakes(float vitesseActuelle){
+    float vitesseTheo = getVitesseTheorique();
+    // TODO PID pour ajuster les freins en fonction vitesseThéorique
 }
 
 void Treuil::descend(short hauteurDrone)
@@ -34,7 +39,7 @@ void Treuil::descend(short hauteurDrone)
 }
 
 float Treuil::getVitesseTheorique(){
-    switch (status)
+    switch (status)  //TODO Faire une fonction par partie en fonction de la phase de la charge
     {
     case 0:
         return 0;
@@ -81,7 +86,7 @@ void Treuil::update()
 
     speedPayload = (distanceParcourue / deltaDegree) * 10; // Calcul de la vitesse de la payload en m/s
 
-
+    ajustBrakes(speedPayload);
 }
 
 short Treuil::getPayloadHeight()
