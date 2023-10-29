@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include <Treuil.h>
 
-#define PINLOAD1 0
+#define PINLOAD1 0 //TODO mettre les bonnes pines
 #define PINHW1 0
 #define PINBRAKE1 0
 
@@ -24,6 +24,6 @@ void setup() {
 void loop() {
     //TODO attendre un message du controleur principal
 
-    
+
 }
 

@@ -25,8 +25,22 @@ class Treuil{
         unsigned long startTime = 0;
         int startDegree = 0;
 
+        /**
+         * @brief Retourne la fonction de la vitesse du payload en fonction de son altitude 
+         * @return La vitesse theorique en m/s
+        */
         float getVitesseTheorique();
+
+        /**
+         * @brief Gere tout le PID des freins (servo) afin de match la vitesse theorique donnée
+        */
         void ajustBrakes(float vitesseActuelle);
+
+        /**
+         * @brief calcule l'angle parcourue par la bobine (l'encodeur) depuis le dernier appel
+         * @return L'angle total parcourue en valeur absolue en degrés
+        */
+        long getDeltaAngle();
 
     public:
         /**

@@ -29,6 +29,14 @@ void Treuil::ajustBrakes(float vitesseActuelle){
     // TODO PID pour ajuster les freins en fonction vitesseThéorique
 }
 
+long Treuil::getDeltaAngle(){
+    if(startDegree >= encodeur.readAngle()){ // Si l'angle a relooper à 0 degrés, calculer l'angle
+        return ( startDegree - encodeur.readAngle()); //!! Adapter en fonction de l'encodeur
+    }else{
+       return ( (startDegree + encodeur.getMaxAngle()) - encodeur.readAngle());
+    }
+}
+
 void Treuil::descend(short hauteurDrone)
 {
     this->hauteurDrone = hauteurDrone;
@@ -70,16 +78,12 @@ float Treuil::getVitesseTheorique(){
     }
 }
 
+
+
 void Treuil::update()
 {
     unsigned int deltaTime = millis() - startTime;
-    int deltaDegree = 0;
-
-    if(startDegree >= encodeur.readAngle()){ // Si l'angle a relooper à 0 degrés, calculer l'angle
-        deltaDegree = startDegree - encodeur.readAngle();
-    }else{
-        deltaDegree = (startDegree + encodeur.getMaxAngle()) - encodeur.readAngle();
-    }
+    int deltaDegree = getDeltaAngle();
 
     short distanceParcourue = (deltaDegree * DIAMETER) / 360; // Calcule une distance approximative parcourue par le payload en cm
     hauteurPayload -= distanceParcourue; // Soustrait cette distance à la hauteur
