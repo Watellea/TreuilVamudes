@@ -44,10 +44,12 @@ void Treuil::descend(short hauteurDrone)
 
     status = 1;
     startTime = millis();
+
 }
 
 float Treuil::getVitesseTheorique(){
-    switch (status)  //TODO Faire une fonction par partie en fonction de la phase de la charge
+    //TODO actualiser la phase en fonction hauteur de payload / hauteur drone
+    switch (phase)  //TODO Faire une fonction par partie en fonction de la phase de la charge
     {
     case 0:
         return 0;
@@ -91,6 +93,7 @@ void Treuil::update()
     speedPayload = (distanceParcourue / deltaDegree) * 10; // Calcul de la vitesse de la payload en m/s
 
     ajustBrakes(speedPayload);
+    
 }
 
 short Treuil::getPayloadHeight()

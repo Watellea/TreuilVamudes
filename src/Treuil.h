@@ -15,9 +15,9 @@ class Treuil{
         byte pinHotWire;
         byte pinBrake;
 
-        short hauteurDrone;
-        short hauteurPayload;
-        short speedPayload;
+        short hauteurDrone; // Hauteur du drone en m
+        short hauteurPayload; // Hauteur actuelle de la payload (s'actualise) en m
+        short speedPayload; // Vitesse payload en m/s
 
         byte status;
         byte phase;
@@ -71,7 +71,7 @@ class Treuil{
         bool cutWire();
 
         /**
-         * @return Le status du treuil : 0 si il n'est pas enclanché , 1 si il est en train de descendre et 2 si la payload est lachée
+         * @return Le status du treuil : 0 si il n'est pas enclanché ,1 si il descend  et 2 si le payload a été lâché
         */
         byte getStatus();
 
