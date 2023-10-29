@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include <Treuil.h>
 
-#define PINLOAD1 0 //TODO mettre les bonnes pines
+#define PINLOAD1 0 //TODO mettre les bonnes pines pour les treuils
 #define PINHW1 0
 #define PINBRAKE1 0
 
@@ -22,7 +22,8 @@ void setup() {
 }
 
 void loop() {
-    //TODO attendre un message du controleur principal
+    //TODO attendre un message du controleur principal et drop quand c'est demand
+    //TODO interpréter le message du controleur
 
 
 }
