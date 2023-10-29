@@ -2,15 +2,20 @@
 
 #define MAX_CUT_TIME 100
 #define MAX_ESSAI_CUT 3
-#define MAX_SPEED 10
-#define DIAMETER 10
-#define KD 0.5
 
-Treuil::Treuil(byte pinLoad, byte pinHotWire, byte pinBrake)
+#define MAX_SPEED 10
+
+#define DIAMETER 10
+
+#define KD 0.2
+
+
+
+Treuil::Treuil(byte pinLoad, byte pinHotWire, byte idBrake)
 {
     this->pinLoad = pinLoad;
     this->pinHotWire = pinHotWire;
-    this->pinBrake = pinBrake;
+    this->idBrake = idBrake;
     this->status = 0; // Le status 0 indique que le treuil n'a pas commencé à descendre
     this->speedPayload = 0;
     this->phase = 0;
@@ -21,12 +26,16 @@ Treuil::Treuil(byte pinLoad, byte pinHotWire, byte pinBrake)
     encodeur.begin();   //!! Savoir quel encodeur est utilisé et l'adapter
     encodeur.resetPosition();
 
-    servo.attach(pinBrake); //!! Savoir quel servo est utilisé et adapter
+    servo = LSS(idBrake);
+
+    servo.move(0);
 }
 
 void Treuil::ajustBrakes(float vitesseActuelle){
     float vitesseTheo = getVitesseTheorique();
-    // TODO PID pour ajuster les freins en fonction vitesseThéorique
+    float erreur = vitesseTheo - vitesseActuelle;
+
+    servo.move(servo.getPosition() + erreur * KD); //!! Ajuster le KD en fonction du frein
 }
 
 long Treuil::getDeltaAngle(){

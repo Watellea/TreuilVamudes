@@ -2,18 +2,20 @@
 #define TREUIL_H
 #include <Arduino.h>
 #include <AS5600.h>
-#include <Servo.h>
+#include <LSS.h>
+
+
 
 class Treuil{
     private:
         AS5600 encodeur;
-        Servo servo;
+        LSS servo;
 
         const float diametreBobine = 2;
 
         byte pinLoad;
         byte pinHotWire;
-        byte pinBrake;
+        byte idBrake;
 
         short hauteurDrone; // Hauteur du drone en m
         short hauteurPayload; // Hauteur actuelle de la payload (s'actualise) en m
@@ -46,7 +48,7 @@ class Treuil{
         /**
          * @brief Constructeur par defaut, prend les pines utilisés par le treuil et les inities.
         */
-        Treuil(byte pinLoad, byte pinHotWire, byte pinBrake);
+        Treuil(byte pinLoad, byte pinHotWire, byte idBrake);
 
         /**
          * @brief Ordonne le début de la descente de la payload
