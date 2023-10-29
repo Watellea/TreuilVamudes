@@ -23,24 +23,24 @@ Treuil::Treuil(byte pinLoad, byte pinHotWire, byte idBrake)
     pinMode(pinLoad, INPUT);
     pinMode(pinHotWire, OUTPUT);
 
-    encodeur.begin();   //!! Savoir quel encodeur est utilisé et l'adapter
+    encodeur.begin();   //TODO intégrer l'encodeur choisi
     encodeur.resetPosition();
 
     servo = LSS(idBrake);
 
-    servo.move(0);
+    servo.move(0); //TODO mettre les freins à leur valeur max
 }
 
 void Treuil::ajustBrakes(float vitesseActuelle){
     float vitesseTheo = getVitesseTheorique();
     float erreur = vitesseTheo - vitesseActuelle;
 
-    servo.move(servo.getPosition() + erreur * KD); //!! Ajuster le KD en fonction du frein
+    servo.move(servo.getPosition() + erreur * KD); //TODO Ajuster le KD en fonction du frein mécanique
 }
 
 long Treuil::getDeltaAngle(){
     if(startDegree >= encodeur.readAngle()){ // Si l'angle a relooper à 0 degrés, calculer l'angle
-        return ( startDegree - encodeur.readAngle()); //!! Adapter en fonction de l'encodeur
+        return ( startDegree - encodeur.readAngle()); //TODO calculer le delta angle 
     }else{
        return ( (startDegree + encodeur.getMaxAngle()) - encodeur.readAngle());
     }
@@ -60,23 +60,23 @@ float Treuil::getVitesseTheorique(){
     //TODO actualiser la phase en fonction hauteur de payload / hauteur drone
     switch (phase)  //TODO Faire une fonction par partie en fonction de la phase de la charge
     {
-    case 0:
+    case 0: // Quand la charge est statique et ne descend pas
         return 0;
     break;
 
-    case 1:
+    case 1: // Commence à relâcher tranquillement le frein
         return 1;
     break;
 
-    case 2:
-        return -1;
+    case 2: // Fonction qui accélère jusqu'à VMax
+        return -1; //TODO faire la fonction qui accélère
     break;
 
-    case 3:
+    case 3: // Plateau Vmax
         return MAX_SPEED;
     break;
 
-    case 4:
+    case 4: // Deccélération
         return ((-3 * (MAX_SPEED / hauteurDrone) * hauteurPayload) + (3 * MAX_SPEED));
     break;
 
@@ -102,7 +102,6 @@ void Treuil::update()
     speedPayload = (distanceParcourue / deltaDegree) * 10; // Calcul de la vitesse de la payload en m/s
 
     ajustBrakes(speedPayload);
-    
 }
 
 short Treuil::getPayloadHeight()
